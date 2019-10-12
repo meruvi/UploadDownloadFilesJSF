@@ -1,1 +1,7 @@
-./nbproject
+######################
+# NetBeans
+######################
+/nbproject/*
+/dist/*
+/build/*
+build.xml

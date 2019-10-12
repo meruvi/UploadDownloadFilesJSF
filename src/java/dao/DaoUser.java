@@ -11,7 +11,7 @@ public class DaoUser {
         for(int i = 1; i <= 5; i++){
             User u = new User();
             u.setUser("juan" + i);
-            u.setPass("juan" + 1);
+            u.setPass("juan" + i);
             
             users.add(u);
         }

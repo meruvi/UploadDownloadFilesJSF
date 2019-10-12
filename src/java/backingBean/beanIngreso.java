@@ -33,9 +33,13 @@ public class beanIngreso {
     public String ingresoAlSistema(){
         ControllerLogIn controllerLogIn = new ControllerLogIn();
         if(controllerLogIn.LogIn(user, pass)){
-            return "yes";
+            return "correcto";
         }else{
-            return "no";
+            return "error";
         }
+    }
+    
+    public String retornarAlIndex(){
+        return "indice";
     }
 }
