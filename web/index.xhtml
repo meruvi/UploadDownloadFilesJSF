@@ -10,6 +10,20 @@
             <p>Ingrese su usuario: <h:inputText id="usuarioIT" value="#{beanIngreso.user}"/></p>
             <p>Ingrese su contraseña: <h:inputSecret id="passIT" value="#{beanIngreso.pass}"/></p>
             <p><h:commandButton id="ingrearCB" value="Ingresar al sistema" action="#{beanIngreso.ingresoAlSistema}"/></p>
+            <p><h:commandLink value="Descargar APK" action="#{beanIngreso.downloadFile('prueba.apk')}"/></p>
+            <p><h:commandLink value="Descargar EXE" action="#{beanIngreso.downloadFile('prueba.exe')}"/></p>
+            <p><h:commandLink value="Descargar JAR" action="#{beanIngreso.downloadFile('prueba.jar')}"/></p>
+            <p><h:commandLink value="Descargar JPG" action="#{beanIngreso.downloadFile('prueba.jpg')}"/></p>
+            <p><h:commandLink value="Descargar JSON" action="#{beanIngreso.downloadFile('prueba.json')}"/></p>
+            <p><h:commandLink value="Descargar MDB" action="#{beanIngreso.downloadFile('prueba.mdb')}"/></p>
+            <p><h:commandLink value="Descargar MP4" action="#{beanIngreso.downloadFile('prueba.mp4')}"/></p>
+            <p><h:commandLink value="Descargar PDF" action="#{beanIngreso.downloadFile('prueba.pdf')}"/></p>
+            <p><h:commandLink value="Descargar PNG" action="#{beanIngreso.downloadFile('prueba.png')}"/></p>
+            <p><h:commandLink value="Descargar RAR" action="#{beanIngreso.downloadFile('prueba.rar')}"/></p>
+            <p><h:commandLink value="Descargar SQL" action="#{beanIngreso.downloadFile('prueba.sql')}"/></p>
+            <p><h:commandLink value="Descargar XLS" action="#{beanIngreso.downloadFile('prueba.xls')}"/></p>
+            
+            <p><h:commandLink value="Descargar PDF" action="#{beanIngreso.descargaArchivo('prueba.pdf')}"/></p>
         </h:form>
     </h:body>
 </html>
