@@ -4,9 +4,14 @@ import controller.ControllerLogIn;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +22,28 @@ public class beanIngreso {
 
     private String user;
     private String pass;
+    private List<String> archivosAdjuntos = new ArrayList<String>();
+
+    public List<String> getArchivosAdjuntos() {
+        archivosAdjuntos.clear();
+        archivosAdjuntos.add("prueba.apk");
+        archivosAdjuntos.add("prueba.exe");
+        archivosAdjuntos.add("prueba.jar");
+        archivosAdjuntos.add("prueba.jpg");
+        archivosAdjuntos.add("prueba.json");
+        archivosAdjuntos.add("prueba.mdb");
+        archivosAdjuntos.add("prueba.mp4");
+        archivosAdjuntos.add("prueba.pdf");
+        archivosAdjuntos.add("prueba.png");
+        archivosAdjuntos.add("prueba.rar");
+        archivosAdjuntos.add("prueba.sql");
+        archivosAdjuntos.add("prueba.xls");
+        return archivosAdjuntos;
+    }
+
+    public void setArchivosAdjuntos(List<String> archivosAdjuntos) {
+        this.archivosAdjuntos = archivosAdjuntos;
+    }
 
     public String getUser() {
         return user;
@@ -50,15 +77,16 @@ public class beanIngreso {
         return "indice";
     }
     
-    public String downloadFile(String filename) {
+    public String downloadFile() {
         
         HttpServletRequest request   =(HttpServletRequest )FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String path = request.getServletContext().getInitParameter("pathSolicitudInversion");
         System.out.println("path:  " + path);
         
-        System.out.println("FileName:  " + filename);
-        //String filename = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("file");
+        String filename = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("archivo");
         File file = new File(path + filename);
+        System.out.println("FileName:  " + filename);
+        
         System.out.println("PathFileName:  " + path + filename);
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();  
 
@@ -92,13 +120,18 @@ public class beanIngreso {
         }
     }
     
-    public void descargaArchivo(String filename) {
+    public void downloadArchivo() {
+        
+        //recuperamos la ruta absoluta desde web.xml
         HttpServletRequest request   =(HttpServletRequest )FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String path = request.getServletContext().getInitParameter("pathSolicitudInversion");
         System.out.println("path:  " + path);
         
-        // lo siento pero el estándar de programación dice que DEBEMOS declarar
-        // nuestras variables al comienzo de cualquier función = (
+        //Recuperamos el parametro enviado "nombre del archivo"
+        Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String filename = parameterMap.get("archivo");
+        System.out.println("Archivo:  " + filename);
+        
         HttpServletResponse objResponse;
         FileInputStream objFileInputStream;
         String strNombreCompletoArchivo, strNombreArchivo;
@@ -129,11 +162,40 @@ public class beanIngreso {
             objResponse.getOutputStream().close();
             // Indicando al framework que la respuesta ha sido completada.
             FacesContext.getCurrentInstance().responseComplete();
-        } catch (Exception objEx) {
-            // gestiona los errores ...
+        } catch (Exception ex) {
+            System.out.println("Error:  " + ex);
         }
     }
-    //The constant used for byte array size
+    
+    public void descargarArchivo(){
+        ExternalContext context   =FacesContext.getCurrentInstance().getExternalContext();
+        HttpServletRequest req = (HttpServletRequest) context.getRequest();
+        Map<String, String> param = (Map<String, String>) context.getRequestParameterMap();
+        HttpServletResponse objResponse = (HttpServletResponse) context.getResponse();
+        FileInputStream objFileInputStream;
+        byte[] arrDatosArchivo;
+        
+        String ruta = req.getServletContext().getInitParameter("pathSolicitudInversion");
+        String archivo = param.get("archivo");
+        String rutaCompleta = ruta + archivo;
+        
+        try {
+            objResponse.setContentType("application/octet-stream");
+            objResponse.setHeader("Content-Disposition", "attachment; filename=\"" + archivo + "\"");
+            objFileInputStream = new FileInputStream(rutaCompleta);
+            arrDatosArchivo = new byte[UConstante.BUFFER_SIZE];
+            while(objFileInputStream.read(arrDatosArchivo, 0, UConstante.BUFFER_SIZE) != -1) {
+               objResponse.getOutputStream().write(arrDatosArchivo, 0, UConstante.BUFFER_SIZE);
+            }
+            objFileInputStream.close();
+            objResponse.getOutputStream().flush();
+            objResponse.getOutputStream().close();
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (Exception ex) {
+            System.out.println("Error:  " + ex);
+        }
+    }
+    
     public class UConstante {
         public static final int BUFFER_SIZE = 2048;
     }

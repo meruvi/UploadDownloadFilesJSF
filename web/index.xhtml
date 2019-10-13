@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Bienvenido al Sistema</title>
     </h:head>
@@ -10,21 +11,48 @@
             <p>Ingrese su usuario: <h:inputText id="usuarioIT" value="#{beanIngreso.user}"/></p>
             <p>Ingrese su contraseña: <h:inputSecret id="passIT" value="#{beanIngreso.pass}"/></p>
             <p><h:commandButton id="ingrearCB" value="Ingresar al sistema" action="#{beanIngreso.ingresoAlSistema}"/></p>
-            <p><h:commandLink value="Descargar APK" action="#{beanIngreso.downloadFile('prueba.apk')}"/></p>
-            <p><h:commandLink value="Descargar EXE" action="#{beanIngreso.downloadFile('prueba.exe')}"/></p>
-            <p><h:commandLink value="Descargar JAR" action="#{beanIngreso.downloadFile('prueba.jar')}"/></p>
-            <p><h:commandLink value="Descargar JPG" action="#{beanIngreso.downloadFile('prueba.jpg')}"/></p>
-            <p><h:commandLink value="Descargar JSON" action="#{beanIngreso.downloadFile('prueba.json')}"/></p>
-            <p><h:commandLink value="Descargar MDB" action="#{beanIngreso.downloadFile('prueba.mdb')}"/></p>
-            <p><h:commandLink value="Descargar MP4" action="#{beanIngreso.downloadFile('prueba.mp4')}"/></p>
-            <p><h:commandLink value="Descargar PDF" action="#{beanIngreso.downloadFile('prueba.pdf')}"/></p>
-            <p><h:commandLink value="Descargar PNG" action="#{beanIngreso.downloadFile('prueba.png')}"/></p>
-            <p><h:commandLink value="Descargar RAR" action="#{beanIngreso.downloadFile('prueba.rar')}"/></p>
-            <p><h:commandLink value="Descargar SQL" action="#{beanIngreso.downloadFile('prueba.sql')}"/></p>
-            <p><h:commandLink value="Descargar XLS" action="#{beanIngreso.downloadFile('prueba.xls')}"/></p>
-            
-            <p><h:commandLink value="Descargar PDF" action="#{beanIngreso.descargaArchivo('prueba.pdf')}"/></p>
+
+            <h:dataTable value="#{beanIngreso.archivosAdjuntos}" var="data">
+                <h:column>    				
+                    <f:facet name="header">Archivo</f:facet>    				
+                        #{data}
+                </h:column>
+                <h:column>    				
+                    <f:facet name="header">Acción</f:facet>    				
+                    <h:commandLink value="Descargar" action="#{beanIngreso.downloadFile}">
+                        <f:param name="archivo" value="#{data}" />
+                    </h:commandLink>
+                </h:column>
+            </h:dataTable>
+
+            <h:dataTable value="#{beanIngreso.archivosAdjuntos}" var="data">
+                <h:column>    				
+                    <f:facet name="header">Archivo</f:facet>    				
+                        #{data}
+                </h:column>
+                <h:column>    				
+                    <f:facet name="header">Acción</f:facet>    				
+                    <h:commandLink value="Descargar" action="#{beanIngreso.downloadArchivo}">
+                        <f:param name="archivo" value="#{data}" />
+                    </h:commandLink>
+                </h:column>
+            </h:dataTable>
+
+            <h:dataTable value="#{beanIngreso.archivosAdjuntos}" var="data">
+                <h:column>    				
+                    <f:facet name="header">Archivo</f:facet>    				
+                        #{data}
+                </h:column>
+                <h:column>    				
+                    <f:facet name="header">Acción</f:facet>    				
+                    <h:commandLink value="Descargar" action="#{beanIngreso.descargarArchivo}">
+                        <f:param name="archivo" value="#{data}" />
+                    </h:commandLink>
+                </h:column>
+            </h:dataTable>
         </h:form>
+        <br />
+        <h:link outcome="welcomeRichfaces" value="Richfaces welcome page" />
     </h:body>
 </html>
 
